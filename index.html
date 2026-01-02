@@ -1555,7 +1555,7 @@ if (funBtn && bubbleLayer) {
   });
 }
 
-fetch("/github-activity")
+fetch("/api/github-activity")
   .then(r => r.text())
   .then(svg => {
     const container = document.getElementById("github-graph");
