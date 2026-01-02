@@ -315,8 +315,6 @@
 
 /* --- Expanded state --- */
 .tech-section.expanded .tech-marquee {
-  animation: none;
-  display: grid;
   grid-template-columns: repeat(6, 1fr); /* 👈 exactly 6 */
   gap: 40px 32px;
   justify-items: center;
@@ -325,6 +323,28 @@
 .tech-section.expanded img {
   opacity: 1;
   transform: scale(1.08);  /* subtle emphasis */
+}
+
+/* ===============================
+   TECH STACK VISIBILITY CONTROL
+================================ */
+
+/* Default: ONLY collapsed visible */
+.tech-collapsed {
+  display: block;
+}
+
+.tech-expanded {
+  display: none;
+}
+
+/* Expanded state: swap */
+.tech-section.expanded .tech-collapsed {
+  display: none !important;
+}
+
+.tech-section.expanded .tech-expanded {
+  display: block !important;
 }
 
 /* --- Toggle button --- */
@@ -367,6 +387,65 @@
 }
 
 /* --- TECH ITEM --- */
+/* ===== TECH STACK GROUPED VIEW ===== */
+
+.tech-expanded {
+  display: none;
+}
+
+.tech-section.expanded .tech-expanded {
+  display: block;
+}
+
+.tech-section.expanded .tech-collapsed {
+  display: none;
+}
+
+.tech-group {
+  padding-top: 12px;
+}
+
+.tech-group:not(:last-child) {
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+body:not(.dark) .tech-group:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tech-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  margin-top: 60px;
+}
+
+.tech-group h3 {
+  font-size: 1.4rem;
+  margin-bottom: 28px;
+  text-align: center;
+  color: #9ca3af;
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 36px 28px;
+
+  /* 🔑 CRITICAL FIX */
+  max-width: 520px;        /* controls icon cluster width */
+  margin: 0 auto;          /* centers the grid */
+  justify-items: center;
+}
+
+/* DARK MODE FIX */
+
+/* ICON VISIBILITY FIX */
+body.dark .tech-item img {
+  filter: brightness(1.25) contrast(1.1);
+}
+
 .tech-item {
   display: flex;
   flex-direction: column;
@@ -1001,6 +1080,29 @@ body.dark .github-card {
   line-height: 1.15;
 }
 
+/* ===============================
+   HARD TECH STACK STATE TOGGLE
+   (THIS FIXES DUPLICATION)
+================================ */
+
+/* DEFAULT: collapsed only */
+.tech-collapsed {
+  display: block !important;
+}
+
+.tech-expanded {
+  display: none !important;
+}
+
+/* EXPANDED STATE: grouped only */
+.tech-section.expanded .tech-collapsed {
+  display: none !important;
+}
+
+.tech-section.expanded .tech-expanded {
+  display: block !important;
+}
+
 </style>
 
 </head>
@@ -1143,75 +1245,100 @@ body.dark .github-card {
     Technologies and tools I work with to build thoughtful, efficient systems.
   </p>
 
-<div class="tech-wrapper">
-  <div class="tech-marquee" id="techMarquee">
-
-    <div class="tech-item" data-label="HTML5">
-      <img src="assets/tech/HTML5.png" alt="HTML5">
-      <span class="tech-name">HTML5</span>
+  <!-- COLLAPSED MARQUEE -->
+  <div class="tech-wrapper tech-collapsed">
+    <div class="tech-marquee">
+      <!-- reuse same items -->
+      <div class="tech-item"><img src="assets/tech/HTML5.png"><span class="tech-name">HTML5</span></div>
+      <div class="tech-item"><img src="assets/tech/CSS3.png"><span class="tech-name">CSS3</span></div>
+      <div class="tech-item"><img src="assets/tech/C.png"><span class="tech-name">C</span></div>
+      <div class="tech-item"><img src="assets/tech/Python.png"><span class="tech-name">Python</span></div>
+      <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg"><span class="tech-name">NumPy</span></div>
+      <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg"><span class="tech-name">Pandas</span></div>
+      <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg"><span class="tech-name">Git</span></div>
+      <div class="tech-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg"><span class="tech-name">GitHub</span></div>
+      <div class="tech-item"><img src="assets/tech/solidworks.png"><span class="tech-name">Solidworks</span></div>
     </div>
-
-    <div class="tech-item" data-label="CSS3">
-      <img src="assets/tech/CSS3.png" alt="CSS3">
-      <span class="tech-name">CSS3</span>
-    </div>
-
-    <div class="tech-item" data-label="C">
-      <img src="assets/tech/C.png" alt="C">
-      <span class="tech-name">C</span>
-    </div>
-
-    <div class="tech-item" data-label="Python">
-      <img src="assets/tech/Python.png" alt="Python">
-      <span class="tech-name">Python</span>
-    </div>
-
-    <div class="tech-item" data-label="NumPy">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg" alt="NumPy">
-      <span class="tech-name">Numpy</span>
-    </div>
-
-    <div class="tech-item" data-label="Pandas">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" alt="Pandas">
-      <span class="tech-name">Pandas</span>
-    </div>
-
-    <div class="tech-item" data-label="MySQL">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL">
-      <span class="tech-name">MySQL</span>
-    </div>
-
-    <div class="tech-item" data-label="Matplotlib">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-original.svg" alt="Matplotlib">
-      <span class="tech-name">Matplotlib</span>
-    </div>
-
-    <div class="tech-item" data-label="Seaborn">
-      <img src="assets/tech/Seaborn.png" alt="Seaborn">
-      <span class="tech-name">Seaborn</span>
-    </div>
-
-    <div class="tech-item" data-label="Git">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git">
-      <span class="tech-name">Git</span>
-    </div>
-
-    <div class="tech-item" data-label="GitHub">
-      <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
-      <span class="tech-name">Github</span>
-    </div>
-
-    <div class="tech-item" data-label="SolidWorks">
-      <img src="assets/tech/solidworks.png" alt="SolidWorks">
-      <span class="tech-name">Solidworks</span>
-    </div>
-
   </div>
+
+  <!-- EXPANDED GROUPED VIEW -->
+<div class="tech-groups tech-expanded">
+
+  <!-- Languages -->
+  <div class="tech-group">
+    <h3>Languages</h3>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <img src="assets/tech/C.png" alt="C">
+        <span class="tech-name">C</span>
+      </div>
+      <div class="tech-item">
+        <img src="assets/tech/Python.png" alt="Python">
+        <span class="tech-name">Python</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Web Development -->
+  <div class="tech-group">
+    <h3>Web Development</h3>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <img src="assets/tech/HTML5.png" alt="HTML5">
+        <span class="tech-name">HTML5</span>
+      </div>
+      <div class="tech-item">
+        <img src="assets/tech/CSS3.png" alt="CSS3">
+        <span class="tech-name">CSS3</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Science -->
+  <div class="tech-group">
+    <h3>Data Science & Visualization</h3>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg" alt="NumPy">
+        <span class="tech-name">NumPy</span>
+      </div>
+      <div class="tech-item">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" alt="Pandas">
+        <span class="tech-name">Pandas</span>
+      </div>
+      <div class="tech-item">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-original.svg" alt="Matplotlib">
+        <span class="tech-name">Matplotlib</span>
+      </div>
+      <div class="tech-item">
+        <img src="assets/tech/Seaborn.png" alt="Seaborn">
+        <span class="tech-name">Seaborn</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tools -->
+  <div class="tech-group">
+    <h3>Tools & Platforms</h3>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git">
+        <span class="tech-name">Git</span>
+      </div>
+      <div class="tech-item">
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub">
+        <span class="tech-name">GitHub</span>
+      </div>
+      <div class="tech-item">
+        <img src="assets/tech/solidworks.png" alt="SolidWorks">
+        <span class="tech-name">SolidWorks</span>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-  <button class="tech-toggle" id="techToggle" aria-label="Expand tech stack">
-    ⬢
-  </button>
+  <button class="tech-toggle" id="techToggle">⬢</button>
 </section>
 
 <section class="github-section content-section">
