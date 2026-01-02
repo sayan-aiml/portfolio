@@ -1558,44 +1558,16 @@ if (funBtn && bubbleLayer) {
 fetch("/api/github-activity")
   .then(res => {
     if (!res.ok) throw new Error("API error");
-    return res.json();
+    return res.text();          // 🔑 TEXT, NOT JSON
   })
-  .then(data => {
-    renderGitHubGraph(data);
+  .then(svg => {
+    document.getElementById("github-graph").innerHTML = svg;
   })
   .catch(err => {
     console.error(err);
     document.getElementById("github-graph").innerHTML =
       "<p style='color:#9ca3af'>Unable to load GitHub activity.</p>";
   });
-
-function renderGitHubGraph(apiData) {
-  const weeks =
-    apiData?.data?.user?.contributionsCollection?.contributionCalendar?.weeks;
-
-  if (!weeks) {
-    document.getElementById("github-graph").textContent = "No data available.";
-    return;
-  }
-
-  const container = document.getElementById("github-graph");
-  container.innerHTML = "";
-  container.style.display = "grid";
-  container.style.gridAutoFlow = "column";
-  container.style.gridTemplateRows = "repeat(7, 1fr)";
-  container.style.gap = "4px";
-  container.style.justifyContent = "center";
-
-  weeks.forEach(week => {
-    week.contributionDays.forEach(day => {
-      const cell = document.createElement("div");
-      cell.className = "github-day";
-      cell.title = `${day.date} • ${day.contributionCount} contributions`;
-      cell.style.backgroundColor = day.color;
-      container.appendChild(cell);
-    });
-  });
-}
 
 </script>
 
