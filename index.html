@@ -375,9 +375,38 @@
 }
 
 /* Icon */
+/* Icon */
 .tech-item img {
   height: 56px;
-  opacity: 0.65;
+  opacity: 0.7;
+  transition: 
+    transform 0.3s ease,
+    filter 0.3s ease,
+    opacity 0.3s ease;
+}
+
+/* ✨ Subtle glow on hover */
+.tech-item:hover img {
+  opacity: 1;
+  transform: scale(1.06);
+  filter: drop-shadow(0 0 10px rgba(168, 150, 255, 0.55));
+}
+
+body.dark .tech-item img {
+  filter: 
+    brightness(1)
+    contrast(1.1);
+}
+
+body.dark .tech-item:hover img {
+  filter:
+    brightness(1.35)
+    contrast(1.15)
+    drop-shadow(0 0 12px rgba(180, 200, 255, 0.65));
+}
+
+body.dark .tech-item:hover img {
+  filter: drop-shadow(0 0 12px rgba(180, 200, 255, 0.65));
 }
 
 /* Label (hidden by default) */
@@ -941,6 +970,28 @@ body.dark #funBtn::after {
   rx: 3;
   ry: 3;
 }
+
+/* ===============================
+   GLOBAL DARK MODE BACKGROUND
+================================ */
+body.dark {
+  background: radial-gradient(
+    circle at top,
+    #141418 0%,
+    #0b0b0e 70%
+  );
+  color: #e5e7eb;
+  /* Smooth dark background transitions */
+  background-attachment: fixed;
+}
+
+body.dark .layout,
+body.dark .map-card,
+body.dark .github-card {
+  background: rgba(18, 18, 24, 0.9);
+  border-color: rgba(255,255,255,0.08);
+}
+
 /* FORCE section heading size */
 .about-section h2,
 .education-section h2,
