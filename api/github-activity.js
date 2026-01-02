@@ -1,50 +1,51 @@
-export default async function handler(req, res) {
-  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const USERNAME = "sayan-aiml";
+export const config = {
+  runtime: "nodejs18.x",
+};
 
-  const query = `
-    query {
-      user(login: "${USERNAME}") {
-        contributionsCollection {
-          contributionCalendar {
-            weeks {
-              contributionDays {
-                date
-                contributionCount
+export default async function handler(req, res) {
+  try {
+    const USERNAME = process.env.USERNAME || "sayan-aiml";
+    const token = process.env.GITHUB_TOKEN;
+
+    if (!token) {
+      return res.status(500).json({ error: "Missing GITHUB_TOKEN" });
+    }
+
+    const query = `
+      query {
+        user(login: "${USERNAME}") {
+          contributionsCollection {
+            contributionCalendar {
+              weeks {
+                contributionDays {
+                  date
+                  contributionCount
+                  color
+                }
               }
             }
           }
         }
       }
-    }
-  `;
+    `;
 
-  try {
     const response = await fetch("https://api.github.com/graphql", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${GITHUB_TOKEN}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
       },
-      body: JSON.stringify({ query })
+      body: JSON.stringify({ query }),
     });
 
     const data = await response.json();
 
-    if (!data.data) {
-      return res.status(500).send("GitHub API error");
+    if (data.errors) {
+      return res.status(500).json(data.errors);
     }
 
-    const weeks =
-      data.data.user.contributionsCollection.contributionCalendar.weeks;
-
-    // Build SVG (you already had this logic)
-    const svg = generateSVG(weeks); // your existing SVG builder
-
-    res.setHeader("Content-Type", "image/svg+xml");
-    res.status(200).send(svg);
-
+    res.status(200).json(data);
   } catch (err) {
-    res.status(500).send("Server error");
+    res.status(500).json({ error: err.message });
   }
 }
