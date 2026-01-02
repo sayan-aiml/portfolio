@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try {
+    const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
     const USERNAME = "sayan-aiml";
-    const token = process.env.GITHUB_TOKEN;
 
     const query = `
       query {
@@ -12,7 +12,6 @@ export default async function handler(req, res) {
                 contributionDays {
                   date
                   contributionCount
-                  color
                 }
               }
             }
@@ -25,46 +24,45 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
       },
-      body: JSON.stringify({ query })
+      body: JSON.stringify({ query }),
     });
 
-    const json = await response.json();
+    const data = await response.json();
+
+    if (!data.data) {
+      return res.status(500).send("GitHub API error");
+    }
+
     const weeks =
-      json.data.user.contributionsCollection.contributionCalendar.weeks;
+      data.data.user.contributionsCollection.contributionCalendar.weeks;
 
-    const cell = 12;
-    const gap = 3;
-    const rows = 7;
+    // Build SVG
+    let svg = `<svg width="720" height="110" viewBox="0 0 720 110" xmlns="http://www.w3.org/2000/svg">`;
 
-    const width = weeks.length * (cell + gap);
-    const height = rows * (cell + gap);
+    let x = 0;
+    weeks.forEach(week => {
+      let y = 0;
+      week.contributionDays.forEach(day => {
+        const c = day.contributionCount;
+        let color = "#ebedf0";
+        if (c > 0) color = "#9be9a8";
+        if (c > 3) color = "#40c463";
+        if (c > 6) color = "#30a14e";
+        if (c > 10) color = "#216e39";
 
-    let svg = `<svg viewBox="0 0 ${width} ${height}"
-      xmlns="http://www.w3.org/2000/svg">`;
-
-    weeks.forEach((week, x) => {
-      week.contributionDays.forEach((day, y) => {
-        svg += `
-          <rect
-            x="${x * (cell + gap)}"
-            y="${y * (cell + gap)}"
-            width="${cell}"
-            height="${cell}"
-            rx="3"
-            ry="3"
-            fill="${day.color}"
-          />
-        `;
+        svg += `<rect x="${x}" y="${y}" width="10" height="10" rx="3" ry="3" fill="${color}" />`;
+        y += 12;
       });
+      x += 12;
     });
 
-    svg += "</svg>";
+    svg += `</svg>`;
 
     res.setHeader("Content-Type", "image/svg+xml");
     res.status(200).send(svg);
   } catch (err) {
-    res.status(500).send("GitHub activity failed");
+    res.status(500).send("Server error");
   }
 }
