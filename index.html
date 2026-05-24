@@ -1346,6 +1346,153 @@ body.dark .section:not(:last-child) {
   margin-bottom: 12px;
 }
 
+/* ===============================
+   EXPERIENCE SECTION
+================================ */
+
+#experience .edu-item {
+  display: grid;
+  grid-template-columns: 72px 1fr auto;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ---------- LOGO ---------- */
+
+#experience .edu-left {
+  padding-top: 0;
+}
+
+.exp-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: white;
+  padding: 4px;
+  margin-top: 5px; /* aligns logo with timeline */
+}
+
+/* ---------- TEXT ---------- */
+
+.exp-role {
+  color: #374151;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.exp-desc {
+  margin-top: 14px;
+  line-height: 1.8;
+  max-width: 760px;
+}
+
+/* ---------- TIMELINE ---------- */
+
+.pr-timeline {
+  margin-top: 30px;
+}
+
+.pr-item {
+  position: relative;
+  padding-left: 52px;
+  margin-bottom: 42px;
+}
+
+.pr-item:last-child {
+  margin-bottom: 0;
+}
+
+/* vertical line */
+.pr-item::before {
+  content: "";
+  position: absolute;
+
+  left: 9px;
+  top: 22px;
+
+  width: 2px;
+  height: calc(100% + 28px);
+
+  background: #d1d5db;
+}
+
+.pr-item:last-child::before {
+  display: none;
+}
+
+/* circle marker */
+.pr-marker {
+  position: absolute;
+  left: 0;
+  top: 2px;
+
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #111827;
+}
+
+/* ---------- PR CONTENT ---------- */
+
+.pr-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #111827;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.pr-title:hover {
+  opacity: 0.72;
+  text-decoration: underline;
+}
+
+.pr-content p {
+  margin-top: 10px;
+  color: #6b7280;
+  line-height: 1.8;
+  font-size: 0.96rem;
+  max-width: 680px;
+}
+
+/* ---------- YEAR ---------- */
+
+#experience .edu-year {
+  padding-top: 5px;
+  white-space: nowrap;
+}
+
+/* ===============================
+   DARK MODE
+================================ */
+
+body.dark .exp-logo {
+  background: rgba(255,255,255,0.92);
+}
+
+body.dark .exp-role {
+  color: #d1d5db;
+}
+
+body.dark .pr-item::before {
+  background: rgba(255,255,255,0.14);
+}
+
+body.dark .pr-marker {
+  background: #0b0b0e;
+  border-color: #f3f4f6;
+}
+
+body.dark .pr-title {
+  color: #f9fafb;
+}
+
+body.dark .pr-content p {
+  color: #94a3b8;
+}
 </style>
 
 </head>
@@ -1482,6 +1629,96 @@ body.dark .section:not(:last-child) {
   </div>
 </section>
 
+<section id="experience" class="education-section content-section">
+
+  <h2>Experience</h2>
+
+  <div class="edu-item">
+
+    <!-- LOGO -->
+    <div class="edu-left">
+      <img src="assets/tech/cBioPortal.png"
+           alt="cBioPortal logo"
+           class="exp-logo" />
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="edu-main">
+
+      <h3>cBioPortal</h3>
+
+      <p class="exp-role">
+        Open Source Contributor · Cancer Genomics Platform
+      </p>
+
+      <p class="exp-desc">
+        Contributed to production-level open-source bioinformatics software
+        used for visualization and analysis of cancer genomic datasets.
+      </p>
+
+      <!-- PR TIMELINE -->
+      <div class="pr-timeline">
+
+        <!-- PR 1 -->
+        <div class="pr-item">
+
+          <div class="pr-marker"></div>
+
+          <div class="pr-content">
+
+            <a href="YOUR_PR_LINK_1"
+               target="_blank"
+               class="pr-title">
+
+              PR #5380 · Fix missing-value rendering in Clinical Data tables
+
+            </a>
+
+            <p>
+              <p>
+Fixed missing-value rendering in cBioPortal Clinical Data tables by implementing consistent placeholder visualization for empty clinical fields, improving readability and distinction between missing data and UI rendering issues.
+</p>
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- PR 2 -->
+        <div class="pr-item">
+
+          <div class="pr-marker"></div>
+
+          <div class="pr-content">
+
+            <a href="https://github.com/cBioPortal/cbioportal-frontend/pull/5435"
+               target="_blank"
+               class="pr-title">
+
+              PR #5435 · Fix Clinical Data table headers disappearing while scrolling
+            </a>
+
+            <p>
+              Implemented a sticky table header and added a scroll container for the table using dynamic viewport height.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- YEAR -->
+    <div class="edu-year">
+      2026 – Present
+    </div>
+
+  </div>
+
+</section>
+
 <section id="tech" class="tech-section content-section">
   <h2>Tech Stack.</h2>
   <p class="tech-subtitle">
@@ -1517,8 +1754,8 @@ body.dark .section:not(:last-child) {
         <span class="tech-name">C</span>
       </div>
       <div class="tech-item">
-        <img src="assets/tech/C++.png" alt="C++">
-        <span class="tech-name">C++</span>
+        <img src="assets/tech/C++.png" alt="C">
+        <span class="tech-name">C</span>
       </div>
       <div class="tech-item">
         <img src="assets/tech/Python.png" alt="Python">
