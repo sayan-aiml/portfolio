@@ -1493,11 +1493,194 @@ body.dark .pr-title {
 body.dark .pr-content p {
   color: #94a3b8;
 }
+
+.resume-card{
+
+    position:fixed;
+    top:30px;
+    right:40px;
+    transition: transform 0.35s ease;
+
+    display:flex;
+    align-items:center;
+    gap:16px;
+
+    padding:2px 16px;
+
+    border-radius:18px;
+
+    background:white;
+
+    border:1px solid black;
+
+    text-decoration:none;
+
+    transition:.35s;
+
+    z-index:20;
+
+}
+
+.resume-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 15px 35px rgba(180,140,255,.18);
+
+}
+
+.resume-text{
+
+    color:black;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    letter-spacing:.5px;
+
+}
+
+.resume-avatar{
+
+    position:relative;
+
+    width:55px;
+
+    height:55px;
+
+}
+
+.resume-avatar img{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.eye-close{
+
+    opacity:0;
+
+}
+
+.resume-card:hover .eye-open{
+
+    animation:blinkOpen .7s forwards;
+
+}
+
+.resume-card:hover .eye-close{
+
+    animation:blinkClosed .7s forwards;
+
+}
+
+@keyframes blinkOpen{
+
+0%,40%{
+
+opacity:1;
+
+}
+
+50%,70%{
+
+opacity:0;
+
+}
+
+100%{
+
+opacity:1;
+
+}
+
+}
+
+@keyframes blinkClosed{
+
+0%,40%{
+
+opacity:0;
+
+}
+
+50%,70%{
+
+opacity:1;
+
+}
+
+100%{
+
+opacity:0;
+
+}
+
+}
+
+@media(max-width:900px){
+
+.resume-card{
+
+right:20px;
+top:20px;
+
+padding:10px 16px;
+
+}
+
+.resume-avatar{
+
+width:45px;
+height:45px;
+
+}
+
+.resume-text{
+
+font-size:15px;
+
+}
+
+}
+
 </style>
 
 </head>
 
 <body>
+
+<a href="assets/Sayan_Pattanayak_Resume.pdf"
+   download
+   class="resume-card">
+
+    <div class="resume-avatar">
+
+        <!-- Open Eye -->
+        <img src="assets/avatar-open.png"
+             class="eye-open"
+             alt="Avatar">
+
+        <!-- Closed Eye -->
+        <img src="assets/avatar-closed.png"
+             class="eye-close"
+             alt="Avatar">
+
+    </div>
+
+    <div class="resume-text">
+        Resume
+    </div>
+
+</a>
 
 <main class="container">
   <section class="hero">
@@ -2369,6 +2552,23 @@ fetch("/api/github-activity")
     document.getElementById("github-graph").innerHTML =
       "<p style='color:#9ca3af'>Unable to load GitHub activity.</p>";
   });
+
+let lastScroll = window.scrollY;
+const card = document.querySelector(".resume-card");
+
+window.addEventListener("scroll", () => {
+    const currentScroll = window.scrollY;
+
+    if (currentScroll > lastScroll) {
+        // Scrolling down
+        card.style.transform = "translateY(-100px)";
+    } else {
+        // Scrolling up
+        card.style.transform = "translateY(0)";
+    }
+
+    lastScroll = currentScroll;
+});
 
 </script>
 
